@@ -27,6 +27,10 @@ button.primary {
   background-color: var(--green);
   color: white;
 }
+button.deleteBtn{
+  background-color: red;
+  color: white;
+}
 
 .app {
   margin: 0 auto;

@@ -24,6 +24,29 @@ function PlantPage() {
   .then((res) => res.json())
   .then((newPlant) => setPlantList([...plantList, newPlant]));
   }
+  function deletePlant(id) {
+    fetch(`http://localhost:6001/plants/${id}`, {
+      method: "DELETE",
+    })
+    .then((res) => res.json())
+    .then((newPlant) => setPlantList(plantList.filter((plant) => plant.id !== id)));
+  }
+  function updatePlant(updatedPlantObj) {
+    fetch(`http://localhost:6001/plants/${updatedPlantObj.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedPlantObj),
+    })
+   .then((res) => res.json())
+   .then((newPlant) => setPlantList(plantList.filter((plant) => {
+      if (plant.id === updatedPlantObj.id) {
+        plant.price = updatedPlantObj.price;
+      }
+      return true;
+   })));
+  }
 
   const filteredPlants = plantList.filter((plant) => plant.name.toLowerCase().includes(searchTerm.toLowerCase()));
 
@@ -31,7 +54,7 @@ function PlantPage() {
     <main>
       <NewPlantForm addPlant={addPlant}/>
       <Search setSearchTerm={setSearchTerm}/>
-      <PlantList plantList={filteredPlants}/>
+      <PlantList plantList={filteredPlants} deletePlant={deletePlant} updatePlant={updatePlant} />
     </main>
   );
 }

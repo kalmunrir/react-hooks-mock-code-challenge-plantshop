@@ -1,8 +1,14 @@
 import React, {useState} from "react";
 
-function PlantCard({plant}) {
+function PlantCard({plant, updatePlant, deletePlant}) {
   const {id, name, image, price} = plant;
   const [inStock, setInStock] = useState(true);
+  const [changedPrice, setChangedPrice] = useState(0);
+
+  function handlePriceChange(e) {
+    e.preventDefault();
+    updatePlant({...plant, price: parseFloat(changedPrice)});
+  }
 
   return (
     <li className="card">
@@ -14,6 +20,11 @@ function PlantCard({plant}) {
       ) : (
         <button onClick={() => setInStock(!inStock)}>Out of Stock</button>
       )}
+      <form onSubmit={(e) => handlePriceChange(e)}>
+        <input type="text" placeholder="Price" onChange={(e) => setChangedPrice(e.target.value)}/>
+        <button type="submit" className="primary">Change</button>
+      </form>
+      <button type="submit" className="deleteBtn" onClick={() => deletePlant(id)}>Delete</button>
     </li>
   );
 }
